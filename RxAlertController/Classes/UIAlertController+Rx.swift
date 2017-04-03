@@ -40,7 +40,7 @@ extension Reactive where Base: UIAlertController {
     public static func show(in vc: UIViewController, title: String?, message: String?, buttons:[AlertButton], textFields: [TextFieldConfiguration?], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<(Int, [String])> {
         return Observable<(Int, [String])>.create({ [weak vc] observer in
             guard let vc = vc else {
-                observer.onCompleted()
+                observer.on(.completed)
                 return Disposables.create()
             }
             
@@ -63,7 +63,7 @@ extension Reactive where Base: UIAlertController {
                 alertView.addAction(UIAlertAction(title: buttonTitle, style: actionStyle) { [unowned alertView] _ in
                     let texts:[String] = alertView.textFields?.map { $0.text ?? "" } ?? []
                     observer.on(.next((index, texts)))
-                    observer.onCompleted()
+                    observer.on(.completed)
                 })
             }
             

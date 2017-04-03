@@ -65,21 +65,21 @@ class ViewController: UIViewController {
                 .subscribe(onNext: {
                     print("Dialog dismissed")
                 })
-                .addDisposableTo(bag)
+                .disposed(by: bag)
             
         case .choice:
             UIAlertController.rx.show(in: self, title: "Test", message: "Hello", buttonTitles: ["Cancel", "OK"])
                 .subscribe(onNext: { button in
                     print("Clicked button \(button)")
                 })
-                .addDisposableTo(bag)
+                .disposed(by: bag)
             
         case .select:
             UIAlertController.rx.show(in: self, title: "Change avatar", message: "Select source", buttons: [.default("Take a picture"), .default("Select from gallery"), .cancel("Cancel")], preferredStyle: .actionSheet)
                 .subscribe(onNext: { button in
                     print("Selected option #\(button)")
                 })
-                .addDisposableTo(bag)
+                .disposed(by: bag)
             
         case .dismiss:
             let dialog = UIAlertController.rx.show(in: self, title: "Wait 3 sec", message: nil, buttonTitles: [])
@@ -102,7 +102,8 @@ class ViewController: UIViewController {
                 }, observableFactory: { _ in
                     return Observable<Void>.just().delay(3, scheduler: MainScheduler.instance)
                 })
-                .subscribe().addDisposableTo(bag)
+                .subscribe()
+                .disposed(by: bag)
             
         case .complex:
             UIAlertController.rx.show(in: self, title: "Login", message: "Please, fill this form",
@@ -112,14 +113,14 @@ class ViewController: UIViewController {
                 .subscribe(onNext: { action in
                     print(action)
                 })
-                .addDisposableTo(bag)
+                .disposed(by: bag)
             
         case .prompt:
             UIAlertController.rx.prompt(in: self, title: nil, message: "Enter your name", defaultValue: "Arnold", closeTitle: "Cancel", confirmTitle: "OK")
                 .subscribe(onNext: { name in
                     print("Hey \(name)!")
                 })
-                .addDisposableTo(bag)
+                .disposed(by: bag)
             
         case .retry:
             someNetworkFunctionThatMayFail()
