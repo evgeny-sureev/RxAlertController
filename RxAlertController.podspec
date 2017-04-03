@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'RxAlertController'
   s.version          = '1.0.3'
-  s.summary          = 'A short description of RxAlertController.'
+  s.summary          = 'A reactive wrapper built around UIAlertController.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,13 +18,13 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+RxAlertController allows you to display messages on the screen, using the sequence of RxSwift observable streams instead of traditional closures.
                        DESC
 
   s.homepage         = 'https://github.com/evgeny-sureev/RxAlertController'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'Apache License 2.0', :file => 'LICENSE' }
-  s.author           = { 'evgeny-sureev' => 'u@litka.ru' }
+  s.author           = { 'Evgeny Sureev' => 'u@litka.ru' }
   s.source           = { :git => 'https://github.com/evgeny-sureev/RxAlertController.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
