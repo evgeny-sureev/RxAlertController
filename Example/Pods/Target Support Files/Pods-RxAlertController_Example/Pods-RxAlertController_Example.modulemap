@@ -1,0 +1,6 @@
+framework module Pods_RxAlertController_Example {
+  umbrella header "Pods-RxAlertController_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

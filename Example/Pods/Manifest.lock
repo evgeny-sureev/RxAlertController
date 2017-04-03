@@ -1,0 +1,25 @@
+PODS:
+  - Nimble (5.1.1)
+  - Quick (1.0.0)
+  - RxAlertController (1.0.2):
+    - RxSwift (~> 3.0)
+  - RxSwift (3.3.1)
+
+DEPENDENCIES:
+  - Nimble (~> 5.1.1)
+  - Quick (~> 1.0.0)
+  - RxAlertController (from `../`)
+
+EXTERNAL SOURCES:
+  RxAlertController:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Nimble: 415e3aa3267e7bc2c96b05fa814ddea7bb686a29
+  Quick: 8024e4a47e6cc03a9d5245ef0948264fc6d27cff
+  RxAlertController: 5329dc030de6713e8c561089085f18c9c37ebda5
+  RxSwift: 8fc9f2de6275a9101d518444e00bf32f1a42caac
+
+PODFILE CHECKSUM: fa33a89a118dbe8b8fe47a1312f5cd8b5303178e
+
+COCOAPODS: 1.2.0

@@ -1,0 +1,6 @@
+framework module RxAlertController {
+  umbrella header "RxAlertController-umbrella.h"
+
+  export *
+  module * { export * }
+}
