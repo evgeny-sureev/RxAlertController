@@ -17,6 +17,7 @@ enum ExampleAction: String {
     case dismiss = "Dismiss alert observable afer some time"
     case complex = "Show alert with text fields and buttons"
     case prompt = "Ask user for value"
+    case retry = "Error message with retry button"
 }
 
 /// Iterate enum by user rintaro @ http://stackoverflow.com/a/28341290/5887605
@@ -119,7 +120,36 @@ class ViewController: UIViewController {
                     print("Hey \(name)!")
                 })
                 .addDisposableTo(bag)
+            
+        case .retry:
+            someNetworkFunctionThatMayFail()
+                .retryWhen({ (error) -> Observable<Int> in
+                    return error.flatMap({ [unowned self] error -> Observable<Int> in
+                        return UIAlertController.rx.show(in: self, title: "Error", message: error.localizedDescription, buttonTitles: ["Retry", "Abort"])
+                            .filter({value in value == 0})
+                    })
+                })
+                .flatMap { [unowned self] _ -> Observable<Void> in
+                    return UIAlertController.rx.show(in: self, title: "Save completed!", message: nil, closeTitle: "Ok")
+                }
+                .subscribe()
+                .disposed(by: bag)
         }
+    }
+    
+    var counter = 0
+    func someNetworkFunctionThatMayFail() -> Observable<Void> {
+        return Observable<Void>.just()
+            .delay(0.3, scheduler: MainScheduler.instance)
+            .flatMap({ [unowned self] _ -> Observable<Void> in
+                if self.counter < 2 {
+                    self.counter += 1
+                    return Observable.error(NSError(domain: "RxAlertControllerTest", code: 1, userInfo: [NSLocalizedDescriptionKey : "Error saving scores"]))
+                } else {
+                    self.counter = 0
+                    return Observable.just()
+                }
+            })
     }
 }
 
