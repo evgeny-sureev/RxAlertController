@@ -17,13 +17,16 @@
 import RxSwift
 import UIKit
 
-extension Reactive where Base: UIAlertController {
-    
+extension UIAlertController {
     public enum AlertButton {
         case `default`(String)
+        case disabled(String)
         case cancel(String)
         case destructive(String)
     }
+}
+
+extension Reactive where Base: UIAlertController {
     
     public typealias TextFieldConfiguration = ((UITextField) -> Void)
     
@@ -37,7 +40,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter preferredStyle: Alert's style
     /// - returns: `Observable<(Int, [String])>`, where first value in tuple is index of selected button and second is array of strings, entered in provided textfields (or empty if there are no text fields)
     
-    public static func show(in vc: UIViewController, title: String?, message: String?, buttons:[AlertButton], textFields: [TextFieldConfiguration?], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<(Int, [String])> {
+    public static func show(in vc: UIViewController, title: String?, message: String?, buttons:[UIAlertController.AlertButton], textFields: [TextFieldConfiguration?], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<(Int, [String])> {
         return Observable<(Int, [String])>.create({ [weak vc] observer in
             guard let vc = vc else {
                 observer.on(.completed)
@@ -47,24 +50,25 @@ extension Reactive where Base: UIAlertController {
             let alertView = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             
             for index in 0 ..< buttons.count {
-                let actionStyle: UIAlertActionStyle
-                let buttonTitle: String
-                switch buttons[index] {
-                case .default(let title):
-                    buttonTitle = title
-                    actionStyle = .default
-                case .cancel(let title):
-                    buttonTitle = title
-                    actionStyle = .cancel
-                case .destructive(let title):
-                    buttonTitle = title
-                    actionStyle = .destructive
-                }
-                alertView.addAction(UIAlertAction(title: buttonTitle, style: actionStyle) { [unowned alertView] _ in
+                let handler = { [unowned alertView] (action:UIAlertAction) -> Void in
                     let texts:[String] = alertView.textFields?.map { $0.text ?? "" } ?? []
                     observer.on(.next((index, texts)))
                     observer.on(.completed)
-                })
+                }
+                
+                let action: UIAlertAction
+                switch buttons[index] {
+                case .default(let title):
+                    action = UIAlertAction(title: title, style: .default, handler: handler)
+                case .cancel(let title):
+                    action = UIAlertAction(title: title, style: .cancel, handler: handler)
+                case .destructive(let title):
+                    action = UIAlertAction(title: title, style: .destructive, handler: handler)
+                case .disabled(let title):
+                    action = UIAlertAction(title: title, style: .default, handler: handler)
+                    action.isEnabled = false
+                }
+                alertView.addAction(action)
             }
             
             for textField in textFields {
@@ -91,8 +95,8 @@ extension Reactive where Base: UIAlertController {
     /// - parameter buttons: Array of alert button descriptions
     /// - parameter preferredStyle: Alert's style
     /// - returns: `Observable<Int>`, which emits index of selected button in `buttons` array
-
-    public static func show(in vc: UIViewController, title: String?, message: String?, buttons:[AlertButton], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<Int> {
+    
+    public static func show(in vc: UIViewController, title: String?, message: String?, buttons:[UIAlertController.AlertButton], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<Int> {
         return show(in: vc, title: title, message: message, buttons: buttons, textFields: [], preferredStyle: preferredStyle).map { $0.0 }
     }
     
@@ -108,7 +112,7 @@ extension Reactive where Base: UIAlertController {
     /// - returns: `Observable<Int>`, which emits index of selected button in `buttonTitles` array
     
     public static func show(in vc: UIViewController, title: String?, message: String?, buttonTitles:[String], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<Int> {
-        let buttons = buttonTitles.enumerated().map { (index, title) -> AlertButton in
+        let buttons = buttonTitles.enumerated().map { (index, title) -> UIAlertController.AlertButton in
             if index == 0 {
                 return .cancel(title)
             } else {
