@@ -7,6 +7,10 @@
 
 I'm tired of copying same file into the project every time I need to display a message in the application, so I decided to create a pod.
 
+## Changelog
+
+- `1.1` Add methods to display already instantiated alert controller 
+
 ## Introduction
 
 RxAlertController allows you to display messages on the screen, using the sequence of RxSwift observable streams instead of traditional closures.
