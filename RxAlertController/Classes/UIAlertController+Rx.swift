@@ -80,7 +80,7 @@ extension Reactive where Base: UIAlertController {
             })
             
             return Disposables.create(with: {
-                if alertView.isBeingPresented && alertView.presentingViewController != nil {
+                if alertView.presentingViewController != nil {
                     alertView.dismiss(animated: true, completion: nil)
                 }
             })
