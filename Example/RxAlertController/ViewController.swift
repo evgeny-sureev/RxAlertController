@@ -13,7 +13,8 @@ import RxAlertController
 enum ExampleAction: String {
     case simple = "Show simple alert with one button"
     case choice = "Show alert with two buttons"
-    case select = "Present alert as action sheet"
+    case select = "Present alert as action sheet (iPhone)"
+    case popover = "Present alert in a popover (iPad)"
     case dismiss = "Dismiss alert observable afer some time"
     case complex = "Show alert with text fields and buttons"
     case prompt = "Ask user for value"
@@ -134,6 +135,19 @@ class ViewController: UIViewController {
                     return UIAlertController.rx.show(in: self, title: "Save completed!", message: nil, closeTitle: "Ok")
                 }
                 .subscribe()
+                .disposed(by: bag)
+            
+        case .popover:
+            let alertController = UIAlertController(title: "Change avatar", message: "Select source", preferredStyle: .actionSheet)
+            if let popoverController = alertController.popoverPresentationController {
+                popoverController.sourceView = sender
+                popoverController.sourceRect = sender.bounds
+            }
+
+            alertController.rx.show(in: self, buttons: [.default("Take a picture"), .default("Select from gallery"), .cancel("Cancel")])
+                .subscribe(onNext: { button in
+                    print("Selected option #\(button)")
+                })
                 .disposed(by: bag)
         }
     }
