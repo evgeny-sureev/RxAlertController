@@ -39,12 +39,12 @@
 		607FACE51AFB9204008FA782 /* RxAlertController_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxAlertController_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		6D4DC3F3793C644AE9AB4D9F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		6D4DC3F3793C644AE9AB4D9F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		AC803ACCE436C10CDADE9E19 /* Pods_RxAlertController_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxAlertController_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B030ECF9F504AABA25BAD0DA /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		B030ECF9F504AABA25BAD0DA /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BBF7F029C284BB68D35808FC /* Pods-RxAlertController_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxAlertController_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-RxAlertController_Example/Pods-RxAlertController_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C701EBEC1D3A4AF58A52EEE6 /* Pods-RxAlertController_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxAlertController_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxAlertController_Tests/Pods-RxAlertController_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		E2495EEE2429C6B2A2361EC4 /* RxAlertController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = RxAlertController.podspec; path = ../RxAlertController.podspec; sourceTree = "<group>"; };
+		E2495EEE2429C6B2A2361EC4 /* RxAlertController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = RxAlertController.podspec; path = ../RxAlertController.podspec; sourceTree = "<group>"; };
 		EE3391DB60589CB1FA8088D8 /* Pods_RxAlertController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxAlertController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3895A3586149C8ACC161EC3 /* Pods-RxAlertController_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxAlertController_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxAlertController_Example/Pods-RxAlertController_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -496,12 +496,14 @@
 			baseConfigurationReference = F3895A3586149C8ACC161EC3 /* Pods-RxAlertController_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = RxAlertController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -510,12 +512,14 @@
 			baseConfigurationReference = BBF7F029C284BB68D35808FC /* Pods-RxAlertController_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = RxAlertController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
