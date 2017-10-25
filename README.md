@@ -9,6 +9,7 @@ I'm tired of copying same file into the project every time I need to display a m
 
 ## Changelog
 
+- `2.0` Move to Swift 4
 - `1.1` Add methods to display already instantiated alert controller 
 
 ## Introduction

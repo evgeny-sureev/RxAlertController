@@ -56,7 +56,7 @@ class ViewController: UIViewController {
         return button
     }
     
-    func exampleAction(sender: UIButton) {
+    @objc func exampleAction(sender: UIButton) {
         guard let example = ExampleAction(rawValue: sender.title(for: .normal)!) else {
             return
         }
@@ -98,10 +98,10 @@ class ViewController: UIViewController {
                 }
             }
             
-            Observable<Void>.using( {
+            Observable.using({
                     return ResourceFactory(dialog)
                 }, observableFactory: { _ in
-                    return Observable<Void>.just().delay(3, scheduler: MainScheduler.instance)
+                    return Observable<Void>.just(()).delay(3, scheduler: MainScheduler.instance)
                 })
                 .subscribe()
                 .disposed(by: bag)
@@ -154,7 +154,7 @@ class ViewController: UIViewController {
     
     var counter = 0
     func someNetworkFunctionThatMayFail() -> Observable<Void> {
-        return Observable<Void>.just()
+        return Observable<Void>.just(())
             .delay(0.3, scheduler: MainScheduler.instance)
             .flatMap({ [unowned self] _ -> Observable<Void> in
                 if self.counter < 2 {
@@ -162,7 +162,7 @@ class ViewController: UIViewController {
                     return Observable.error(NSError(domain: "RxAlertControllerTest", code: 1, userInfo: [NSLocalizedDescriptionKey : "Error saving scores"]))
                 } else {
                     self.counter = 0
-                    return Observable.just()
+                    return Observable.just(())
                 }
             })
     }
