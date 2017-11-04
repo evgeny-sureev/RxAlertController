@@ -10,6 +10,7 @@ I'm tired of copying same file into the project every time I need to display a m
 
 ## Changelog
 
+- `2.1` Add Carthage support
 - `2.0` Move to Swift 4
 - `1.1` Add methods to display already instantiated alert controller 
 
@@ -77,6 +78,12 @@ it, simply add the following line to your Podfile:
 
 ```ruby
 pod "RxAlertController"
+```
+
+Also you can use [Carthage](https://github.com/Carthage/Carthage). To install it, add line to Cartfile:
+
+```ruby
+github "evgeny-sureev/RxAlertController"
 ```
 
 ## Author
