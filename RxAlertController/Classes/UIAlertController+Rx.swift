@@ -74,6 +74,7 @@ extension Reactive where Base: UIAlertController {
             
             DispatchQueue.main.async(execute: {
                 vc.present(self.base, animated: true, completion: nil)
+                self.base.view.layoutIfNeeded()
             })
             
             return Disposables.create(with: {
