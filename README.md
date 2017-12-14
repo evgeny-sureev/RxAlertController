@@ -10,6 +10,7 @@ I'm tired of copying same file into the project every time I need to display a m
 
 ## Changelog
 
+- `3.0` Convert return values from `Observable`s to `Single` and `Maybe`
 - `2.1` Add Carthage support
 - `2.0` Move to Swift 4
 - `1.1` Add methods to display already instantiated alert controller 
@@ -23,7 +24,7 @@ Thus, the dialog box can be chained with other observables, for example, as foll
 ```swift
 api.someNetworkFunctionThatMayFail()
 .retryWhen({ (error) -> Observable<Int> in
-    return error.flatMap({ error -> Observable<Int> in
+    return error.flatMap({ error -> Maybe<Int> in
         return UIAlertController.rx.show(in: self, title: "Error", message: error.localizedDescription, buttonTitles: ["Retry", "Abort"])
             .filter({value in value == 0})
     })
@@ -31,7 +32,7 @@ api.someNetworkFunctionThatMayFail()
 .subscribe(onNext, onError, etc)
 ```
 
-And using [UIImagePickerController+RxCreate](https://github.com/ReactiveX/RxSwift/blob/master/RxExample/RxExample/Examples/ImagePicker) from RxSwift examples, you can choose pictures like this:
+And using [RxMediaPicker](https://github.com/RxSwiftCommunity/RxMediaPicker) from RxSwiftCommunity, you can choose pictures like this:
 
 
 ```swift
@@ -40,24 +41,15 @@ UIAlertController.rx.show(in: self,
                      message: "Select source", 
                      buttons: [.default("Take a picture"), .default("Select from gallery"), .cancel("Cancel")],
               preferredStyle: .actionSheet)
-    .flatMap({ choice in
+    .flatMap({ [unowned self] choice in
         if choice == 0 {
-            // Create and return UIImagePickerController with source type camera
-            return UIImagePickerController.rx.createWithParent(self) { picker in
-                picker.sourceType = .camera
-                picker.allowsEditing = false
-            }
+            return self.picker.takePhoto()
         } else {
-            // Create and return UIImagePickerController with source type photo library
-            return UIImagePickerController.rx.createWithParent(self) { picker in
-                picker.sourceType = .photoLibrary
-                picker.allowsEditing = false
-            }
+            return self.picker.selectImage(source: .photoLibrary)
         }
     })
-    .flatMap { $0.rx.didFinishPickingMediaWithInfo }
-    .map { info in
-        return info[UIImagePickerControllerOriginalImage] as? UIImage
+    .map { (original, edited) -> UIImage in
+        return original
     }
     .bind(to: imageView.rx.image)
     .disposed(by: disposeBag)
