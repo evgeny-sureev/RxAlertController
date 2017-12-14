@@ -63,21 +63,21 @@ class ViewController: UIViewController {
         switch example {
         case .simple:
             UIAlertController.rx.show(in: self, title: "Test", message: "Hello", closeTitle: "Dismiss")
-                .subscribe(onNext: {
+                .subscribe(onSuccess: {
                     print("Dialog dismissed")
                 })
                 .disposed(by: bag)
             
         case .choice:
             UIAlertController.rx.show(in: self, title: "Test", message: "Hello", buttonTitles: ["Cancel", "OK"])
-                .subscribe(onNext: { button in
+                .subscribe(onSuccess: { button in
                     print("Clicked button \(button)")
                 })
                 .disposed(by: bag)
             
         case .select:
             UIAlertController.rx.show(in: self, title: "Change avatar", message: "Select source", buttons: [.default("Take a picture"), .default("Select from gallery"), .cancel("Cancel")], preferredStyle: .actionSheet)
-                .subscribe(onNext: { button in
+                .subscribe(onSuccess: { button in
                     print("Selected option #\(button)")
                 })
                 .disposed(by: bag)
@@ -89,7 +89,7 @@ class ViewController: UIViewController {
                 
                 let disposable: Disposable
                 
-                init(_ resource: Observable<Int>) {
+                init(_ resource: Single<Int>) {
                     disposable = resource.subscribe()
                 }
                 
@@ -111,14 +111,14 @@ class ViewController: UIViewController {
                                       buttons: [.default("Login"), .destructive("Forgot Password"), .cancel("Cancel")],
                                       textFields: [{(textfield:UITextField) -> Void in textfield.placeholder = "Login"},
                                                    {(textfield:UITextField) -> Void in textfield.placeholder = "Password"; textfield.isSecureTextEntry = true}])
-                .subscribe(onNext: { action in
+                .subscribe(onSuccess: { action in
                     print(action)
                 })
                 .disposed(by: bag)
             
         case .prompt:
             UIAlertController.rx.prompt(in: self, title: nil, message: "Enter your name", defaultValue: "Arnold", closeTitle: "Cancel", confirmTitle: "OK")
-                .subscribe(onNext: { name in
+                .subscribe(onSuccess: { name in
                     print("Hey \(name)!")
                 })
                 .disposed(by: bag)
@@ -126,12 +126,12 @@ class ViewController: UIViewController {
         case .retry:
             someNetworkFunctionThatMayFail()
                 .retryWhen({ (error) -> Observable<Int> in
-                    return error.flatMap({ [unowned self] error -> Observable<Int> in
+                    return error.flatMap({ [unowned self] error -> Maybe<Int> in
                         return UIAlertController.rx.show(in: self, title: "Error", message: error.localizedDescription, buttonTitles: ["Retry", "Abort"])
                             .filter({value in value == 0})
                     })
                 })
-                .flatMap { [unowned self] _ -> Observable<Void> in
+                .flatMap { [unowned self] _ -> Single<Void> in
                     return UIAlertController.rx.show(in: self, title: "Save completed!", message: nil, closeTitle: "Ok")
                 }
                 .subscribe()
@@ -145,7 +145,7 @@ class ViewController: UIViewController {
             }
 
             alertController.rx.show(in: self, buttons: [.default("Take a picture"), .default("Select from gallery"), .cancel("Cancel")])
-                .subscribe(onNext: { button in
+                .subscribe(onSuccess: { button in
                     print("Selected option #\(button)")
                 })
                 .disposed(by: bag)

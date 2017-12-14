@@ -17,6 +17,10 @@
 import RxSwift
 import UIKit
 
+enum RxAlertControllerError: Error {
+    case presentingViewControllerDeallocated
+}
+
 extension UIAlertController {
     public enum AlertButton {
         case `default`(String)
@@ -37,10 +41,10 @@ extension Reactive where Base: UIAlertController {
     /// - parameter textFields: Array of alert text field configuration blocks
     /// - returns: `Observable<(Int, [String])>`, where first value in tuple is index of selected button and second is array of strings, entered in provided textfields (or empty if there are no text fields)
 
-    public func show(in vc: UIViewController, buttons: [UIAlertController.AlertButton], textFields: [TextFieldConfiguration?]) -> Observable<(Int, [String])> {
-        return Observable<(Int, [String])>.create({ [weak vc] observer in
+    public func show(in vc: UIViewController, buttons: [UIAlertController.AlertButton], textFields: [TextFieldConfiguration?]) -> Single<(Int, [String])> {
+        return Single<(Int, [String])>.create(subscribe: { [weak vc] observer in
             guard let vc = vc else {
-                observer.on(.completed)
+                observer(.error(RxAlertControllerError.presentingViewControllerDeallocated))
                 return Disposables.create()
             }
             
@@ -49,8 +53,7 @@ extension Reactive where Base: UIAlertController {
             for index in 0 ..< buttons.count {
                 let handler = { [unowned alertView] (action:UIAlertAction) -> Void in
                     let texts: [String] = alertView.textFields?.map { $0.text ?? "" } ?? []
-                    observer.on(.next((index, texts)))
-                    observer.on(.completed)
+                    observer(.success((index, texts)))
                 }
                 
                 let action: UIAlertAction
@@ -91,7 +94,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter buttons: Array of alert button descriptions
     /// - returns: `Observable<Int>`, which emits index of selected button in `buttons` array
     
-    public func show(in vc: UIViewController, buttons: [UIAlertController.AlertButton]) -> Observable<Int> {
+    public func show(in vc: UIViewController, buttons: [UIAlertController.AlertButton]) -> Single<Int> {
         return show(in: vc, buttons: buttons, textFields: []).map { $0.0 }
     }
     
@@ -103,7 +106,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter buttonTitles: Titles of alert buttons
     /// - returns: `Observable<Int>`, which emits index of selected button in `buttonTitles` array
     
-    public func show(in vc: UIViewController, buttonTitles: [String]) -> Observable<Int> {
+    public func show(in vc: UIViewController, buttonTitles: [String]) -> Single<Int> {
         let buttons = buttonTitles.enumerated().map { (index, title) -> UIAlertController.AlertButton in
             if index == 0 {
                 return .cancel(title)
@@ -122,7 +125,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter closeTitle: Title of close button
     /// - returns: `Observable<Void>`, which emits onNext after user closes alert
     
-    public func show(in vc: UIViewController, closeTitle: String) -> Observable<Void> {
+    public func show(in vc: UIViewController, closeTitle: String) -> Single<Void> {
         return show(in: vc, buttons: [.cancel(closeTitle)], textFields: []).map { _ in return }
     }
     
@@ -134,7 +137,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter confirmTitle: Title of confirm button
     /// - returns: `Observable<String>`, emitting text that user has entered in alert, if user clicks confirmation button. If user clicks cancel button, stream completes without generating onNext events.
     
-    public func prompt(in vc: UIViewController, defaultValue: String?, closeTitle: String, confirmTitle: String) -> Observable<String> {
+    public func prompt(in vc: UIViewController, defaultValue: String?, closeTitle: String, confirmTitle: String) -> Maybe<String> {
         return show(in: vc, buttons: [.cancel(closeTitle), .default(confirmTitle)], textFields: [{$0.text = defaultValue}])
             .filter { $0.0 == 1 }
             .map { $0.1[0] }
@@ -152,7 +155,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter preferredStyle: Alert's style
     /// - returns: `Observable<(Int, [String])>`, where first value in tuple is index of selected button and second is array of strings, entered in provided textfields (or empty if there are no text fields)
     
-    public static func show(in vc: UIViewController, title: String?, message: String?, buttons: [UIAlertController.AlertButton], textFields: [TextFieldConfiguration?], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<(Int, [String])> {
+    public static func show(in vc: UIViewController, title: String?, message: String?, buttons: [UIAlertController.AlertButton], textFields: [TextFieldConfiguration?], preferredStyle: UIAlertControllerStyle = .alert) -> Single<(Int, [String])> {
         
         let alertView = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         
@@ -168,7 +171,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter preferredStyle: Alert's style
     /// - returns: `Observable<Int>`, which emits index of selected button in `buttons` array
     
-    public static func show(in vc: UIViewController, title: String?, message: String?, buttons: [UIAlertController.AlertButton], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<Int> {
+    public static func show(in vc: UIViewController, title: String?, message: String?, buttons: [UIAlertController.AlertButton], preferredStyle: UIAlertControllerStyle = .alert) -> Single<Int> {
         return show(in: vc, title: title, message: message, buttons: buttons, textFields: [], preferredStyle: preferredStyle).map { $0.0 }
     }
     
@@ -183,7 +186,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter preferredStyle: Alert's style
     /// - returns: `Observable<Int>`, which emits index of selected button in `buttonTitles` array
     
-    public static func show(in vc: UIViewController, title: String?, message: String?, buttonTitles: [String], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<Int> {
+    public static func show(in vc: UIViewController, title: String?, message: String?, buttonTitles: [String], preferredStyle: UIAlertControllerStyle = .alert) -> Single<Int> {
         let buttons = buttonTitles.enumerated().map { (index, title) -> UIAlertController.AlertButton in
             if index == 0 {
                 return .cancel(title)
@@ -204,7 +207,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter closeTitle: Title of close button
     /// - returns: `Observable<Void>`, which emits onNext after user closes alert
     
-    public static func show(in vc: UIViewController, title: String?, message: String?, closeTitle: String) -> Observable<Void> {
+    public static func show(in vc: UIViewController, title: String?, message: String?, closeTitle: String) -> Single<Void> {
         return show(in: vc, title: title, message: message, buttons: [.cancel(closeTitle)], textFields: []).map { _ in return }
     }
     
@@ -218,7 +221,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter confirmTitle: Title of confirm button
     /// - returns: `Observable<String>`, emitting text that user has entered in alert, if user clicks confirmation button. If user clicks cancel button, stream completes without generating onNext events.
     
-    public static func prompt(in vc: UIViewController, title: String?, message: String?, defaultValue: String?, closeTitle: String, confirmTitle: String) -> Observable<String> {
+    public static func prompt(in vc: UIViewController, title: String?, message: String?, defaultValue: String?, closeTitle: String, confirmTitle: String) -> Maybe<String> {
         return show(in: vc, title: title, message: message, buttons: [.cancel(closeTitle), .default(confirmTitle)], textFields: [{$0.text = defaultValue}])
             .filter { $0.0 == 1 }
             .map { $0.1[0] }
