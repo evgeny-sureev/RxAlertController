@@ -153,50 +153,10 @@ extension Reactive where Base: UIAlertController {
     /// - returns: `Observable<(Int, [String])>`, where first value in tuple is index of selected button and second is array of strings, entered in provided textfields (or empty if there are no text fields)
     
     public static func show(in vc: UIViewController, title: String?, message: String?, buttons:[UIAlertController.AlertButton], textFields: [TextFieldConfiguration?], preferredStyle: UIAlertControllerStyle = .alert) -> Observable<(Int, [String])> {
-        return Observable<(Int, [String])>.create({ [weak vc] observer in
-            guard let vc = vc else {
-                observer.on(.completed)
-                return Disposables.create()
-            }
-            
-            let alertView = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
-            
-            for index in 0 ..< buttons.count {
-                let handler = { [unowned alertView] (action:UIAlertAction) -> Void in
-                    let texts:[String] = alertView.textFields?.map { $0.text ?? "" } ?? []
-                    observer.on(.next((index, texts)))
-                    observer.on(.completed)
-                }
-                
-                let action: UIAlertAction
-                switch buttons[index] {
-                case .default(let title):
-                    action = UIAlertAction(title: title, style: .default, handler: handler)
-                case .cancel(let title):
-                    action = UIAlertAction(title: title, style: .cancel, handler: handler)
-                case .destructive(let title):
-                    action = UIAlertAction(title: title, style: .destructive, handler: handler)
-                case .disabled(let title):
-                    action = UIAlertAction(title: title, style: .default, handler: handler)
-                    action.isEnabled = false
-                }
-                alertView.addAction(action)
-            }
-            
-            for textField in textFields {
-                alertView.addTextField(configurationHandler: textField)
-            }
-            
-            DispatchQueue.main.async(execute: {
-                vc.present(alertView, animated: true, completion: nil)
-            })
-            
-            return Disposables.create(with: {
-                if alertView.presentingViewController != nil {
-                    alertView.dismiss(animated: true, completion: nil)
-                }
-            })
-        })
+        
+        let alertView = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+        
+        return alertView.rx.show(in: vc, buttons: buttons, textFields: textFields)
     }
     
     /// Creates and displays UIAlertController to the user.
