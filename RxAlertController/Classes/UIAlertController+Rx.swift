@@ -155,7 +155,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter preferredStyle: Alert's style
     /// - returns: `Observable<(Int, [String])>`, where first value in tuple is index of selected button and second is array of strings, entered in provided textfields (or empty if there are no text fields)
     
-    public static func show(in vc: UIViewController, title: String?, message: String?, buttons: [UIAlertController.AlertButton], textFields: [TextFieldConfiguration?], preferredStyle: UIAlertControllerStyle = .alert) -> Single<(Int, [String])> {
+    public static func show(in vc: UIViewController, title: String?, message: String?, buttons: [UIAlertController.AlertButton], textFields: [TextFieldConfiguration?], preferredStyle: UIAlertController.Style = .alert) -> Single<(Int, [String])> {
         
         let alertView = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         
@@ -171,7 +171,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter preferredStyle: Alert's style
     /// - returns: `Observable<Int>`, which emits index of selected button in `buttons` array
     
-    public static func show(in vc: UIViewController, title: String?, message: String?, buttons: [UIAlertController.AlertButton], preferredStyle: UIAlertControllerStyle = .alert) -> Single<Int> {
+    public static func show(in vc: UIViewController, title: String?, message: String?, buttons: [UIAlertController.AlertButton], preferredStyle: UIAlertController.Style = .alert) -> Single<Int> {
         return show(in: vc, title: title, message: message, buttons: buttons, textFields: [], preferredStyle: preferredStyle).map { $0.0 }
     }
     
@@ -186,7 +186,7 @@ extension Reactive where Base: UIAlertController {
     /// - parameter preferredStyle: Alert's style
     /// - returns: `Observable<Int>`, which emits index of selected button in `buttonTitles` array
     
-    public static func show(in vc: UIViewController, title: String?, message: String?, buttonTitles: [String], preferredStyle: UIAlertControllerStyle = .alert) -> Single<Int> {
+    public static func show(in vc: UIViewController, title: String?, message: String?, buttonTitles: [String], preferredStyle: UIAlertController.Style = .alert) -> Single<Int> {
         let buttons = buttonTitles.enumerated().map { (index, title) -> UIAlertController.AlertButton in
             if index == 0 {
                 return .cancel(title)
