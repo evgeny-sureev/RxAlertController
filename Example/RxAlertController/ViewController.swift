@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxAlertController
 
-enum ExampleAction: String {
+enum ExampleAction: String, CaseIterable {
     case simple = "Show simple alert with one button"
     case choice = "Show alert with two buttons"
     case select = "Present alert as action sheet (iPhone)"
@@ -21,24 +21,13 @@ enum ExampleAction: String {
     case retry = "Error message with retry button"
 }
 
-/// Iterate enum by user rintaro @ http://stackoverflow.com/a/28341290/5887605
-func iterateEnum<T: Hashable>(_: T.Type) -> AnyIterator<T> {
-    var i = 0
-    return AnyIterator {
-        let next = withUnsafeBytes(of: &i) { $0.load(as: T.self) }
-        if next.hashValue != i { return nil }
-        i += 1
-        return next
-    }
-}
-
 class ViewController: UIViewController {
     
     var bag = DisposeBag()
 
     override func viewDidLoad() {
         var prev: UIButton? = nil
-        for example in iterateEnum(ExampleAction.self) {
+        for example in ExampleAction.allCases {
             prev = addButton(forAction: example, after: prev)
         }
     }
