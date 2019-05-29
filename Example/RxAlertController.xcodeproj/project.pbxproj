@@ -224,6 +224,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -283,7 +284,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-RxAlertController_Tests/Pods-RxAlertController_Tests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-RxAlertController_Tests/Pods-RxAlertController_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
 			);
@@ -294,7 +295,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RxAlertController_Tests/Pods-RxAlertController_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RxAlertController_Tests/Pods-RxAlertController_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AD2C4692CAC3D0339C4A43BA /* [CP] Check Pods Manifest.lock */ = {
@@ -321,7 +322,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-RxAlertController_Example/Pods-RxAlertController_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-RxAlertController_Example/Pods-RxAlertController_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/RxAlertController/RxAlertController.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
@@ -332,7 +333,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RxAlertController_Example/Pods-RxAlertController_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RxAlertController_Example/Pods-RxAlertController_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -523,7 +524,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C701EBEC1D3A4AF58A52EEE6 /* Pods-RxAlertController_Tests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -545,7 +545,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3BDAE1D3257BCA7176F79AA0 /* Pods-RxAlertController_Tests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

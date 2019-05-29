@@ -90,7 +90,7 @@ class ViewController: UIViewController {
             Observable.using({
                     return ResourceFactory(dialog)
                 }, observableFactory: { _ in
-                    return Observable<Void>.just(()).delay(3, scheduler: MainScheduler.instance)
+                    return Observable<Void>.just(()).delay(.seconds(3), scheduler: MainScheduler.instance)
                 })
                 .subscribe()
                 .disposed(by: bag)
@@ -144,7 +144,7 @@ class ViewController: UIViewController {
     var counter = 0
     func someNetworkFunctionThatMayFail() -> Observable<Void> {
         return Observable<Void>.just(())
-            .delay(0.3, scheduler: MainScheduler.instance)
+            .delay(RxTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
             .flatMap({ [unowned self] _ -> Observable<Void> in
                 if self.counter < 2 {
                     self.counter += 1
