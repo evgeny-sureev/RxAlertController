@@ -10,6 +10,7 @@ I'm tired of copying same file into the project every time I need to display a m
 
 ## Changelog
 
+- `5.0` Migrate to Swift 5 and RxSwift 5.0
 - `4.0` Migrate to Swift 4.2
 - `3.0` Convert return values from `Observable`s to `Single` and `Maybe`
 - `2.1` Add Carthage support
