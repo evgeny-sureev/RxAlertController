@@ -10,6 +10,7 @@ I'm tired of copying same file into the project every time I need to display a m
 
 ## Changelog
 
+- `6.0` Migrate to Swift 5.4 and RxSwift 6
 - `5.0` Migrate to Swift 5 and RxSwift 5.0
 - `4.0` Migrate to Swift 4.2
 - `3.0` Convert return values from `Observable`s to `Single` and `Maybe`
@@ -79,6 +80,8 @@ Also you can use [Carthage](https://github.com/Carthage/Carthage). To install it
 ```ruby
 github "evgeny-sureev/RxAlertController"
 ```
+
+Since version 5.0.1, RxAlertController works with Swift Package Manager.
 
 ## Author
 
