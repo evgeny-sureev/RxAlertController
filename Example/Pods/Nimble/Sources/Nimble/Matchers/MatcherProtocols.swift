@@ -12,19 +12,20 @@ public protocol Matcher {
     func doesNotMatch(_ actualExpression: Expression<ValueType>, failureMessage: FailureMessage) throws -> Bool
 }
 
+@available(*, deprecated)
 extension Matcher {
     var predicate: Predicate<ValueType> {
         return Predicate.fromDeprecatedMatcher(self)
     }
 
     var toClosure: (Expression<ValueType>, FailureMessage, Bool) throws -> Bool {
-        return ({ expr, msg, expectedResult in
+        return { expr, msg, expectedResult in
             if expectedResult {
                 return try self.matches(expr, failureMessage: msg)
             } else {
                 return try self.doesNotMatch(expr, failureMessage: msg)
             }
-        })
+        }
     }
 }
 
@@ -44,7 +45,7 @@ public protocol NMBContainer {
 #if canImport(Darwin)
 // swiftlint:disable:next todo
 // FIXME: NSHashTable can not conform to NMBContainer since swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
-//extension NSHashTable : NMBContainer {} // Corelibs Foundation does not include this class yet
+// extension NSHashTable : NMBContainer {} // Corelibs Foundation does not include this class yet
 #endif
 
 extension NSArray: NMBContainer {}
@@ -128,20 +129,14 @@ extension NSDate: TestOutputStringConvertible {
     }
 }
 
+#if canImport(Darwin)
 /// Protocol for types to support beLessThan(), beLessThanOrEqualTo(),
 ///  beGreaterThan(), beGreaterThanOrEqualTo(), and equal() matchers.
 ///
 /// Types that conform to Swift's Comparable protocol will work implicitly too
-#if canImport(Darwin)
 @objc public protocol NMBComparable {
     func NMB_compare(_ otherObject: NMBComparable!) -> ComparisonResult
 }
-#else
-// This should become obsolete once Corelibs Foundation adds Comparable conformance to NSNumber
-public protocol NMBComparable {
-    func NMB_compare(_ otherObject: NMBComparable!) -> ComparisonResult
-}
-#endif
 
 extension NSNumber: NMBComparable {
     public func NMB_compare(_ otherObject: NMBComparable!) -> ComparisonResult {
@@ -155,3 +150,4 @@ extension NSString: NMBComparable {
         return compare(otherObject as! String)
     }
 }
+#endif

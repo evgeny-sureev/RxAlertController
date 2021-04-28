@@ -114,7 +114,7 @@ class ViewController: UIViewController {
             
         case .retry:
             someNetworkFunctionThatMayFail()
-                .retryWhen({ (error) -> Observable<Int> in
+                .retry(when: { (error) -> Observable<Int> in
                     return error.flatMap({ [unowned self] error -> Maybe<Int> in
                         return UIAlertController.rx.show(in: self, title: "Error", message: error.localizedDescription, buttonTitles: ["Retry", "Abort"])
                             .filter({value in value == 0})

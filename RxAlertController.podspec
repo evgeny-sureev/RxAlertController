@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxAlertController'
-  s.version          = '5.0.0'
+  s.version          = '6.0.0'
   s.summary          = 'A reactive wrapper built around UIAlertController.'
 
 # This description is used to generate tags and improve search results.
@@ -38,5 +38,5 @@ RxAlertController allows you to display messages on the screen, using the sequen
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit'
-  s.dependency 'RxSwift', '~> 5.0'
+  s.dependency 'RxSwift', '~> 6.0'
 end

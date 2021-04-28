@@ -44,7 +44,7 @@ extension Reactive where Base: UIAlertController {
     public func show(in vc: UIViewController, buttons: [UIAlertController.AlertButton], textFields: [TextFieldConfiguration?]) -> Single<(Int, [String])> {
         return Single<(Int, [String])>.create(subscribe: { [weak vc] observer in
             guard let vc = vc else {
-                observer(.error(RxAlertControllerError.presentingViewControllerDeallocated))
+                observer(.failure(RxAlertControllerError.presentingViewControllerDeallocated))
                 return Disposables.create()
             }
             
