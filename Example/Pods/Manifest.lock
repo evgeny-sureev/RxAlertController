@@ -1,7 +1,7 @@
 PODS:
   - Nimble (9.0.1)
   - Quick (3.1.2)
-  - RxAlertController (6.0.0):
+  - RxAlertController (6.0.1):
     - RxSwift (~> 6.0)
   - RxSwift (6.1.0)
 
@@ -23,9 +23,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Nimble: 7bed62ffabd6dbfe05f5925cbc43722533248990
   Quick: 60f0ea3b8e0cfc0df3259a5c06a238ad8b3c46e0
-  RxAlertController: 171227a999d9cbbcab6a137b2be669b66715d2bc
+  RxAlertController: d47c016a597ce9f461044f307c34959b07c9e9ce
   RxSwift: a834e5c538e89eca0cae86f403f4fbf0336786ce
 
-PODFILE CHECKSUM: 60c13b30adf88ca53ead621f7a65a94ea1064f7a
+PODFILE CHECKSUM: 860f38c0a2154251b3597ee600fef1e85b689c88
 
 COCOAPODS: 1.7.5
